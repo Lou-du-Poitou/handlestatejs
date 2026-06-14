@@ -48,7 +48,7 @@ class HandleState {
             this.#value = v(this.#value);
         } else {
             // Ne pas mettre à jour si les objets sont les mêmes
-            if (Object.is(this.value, v)) return;
+            if (Object.is(this.#value, v)) return;
 
             this.#value = v;
         }
