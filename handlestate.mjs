@@ -44,15 +44,17 @@ class HandleState {
      * @return {void}
      */
     set(v) {
+        let newValue;
         if (v instanceof Function && arguments.length > 0) {
-            this.#value = v(this.#value);
+            newValue = v(this.#value);
         } else {
-            // Ne pas mettre à jour si les objets sont les mêmes
-            if (Object.is(this.#value, v)) return;
-
-            this.#value = v;
+            newValue = v;
         }
 
+        // Ne pas mettre à jour si les objets sont les mêmes
+        if (Object.is(this.#value, newValue)) return;
+
+        this.#value = newValue;
         this.#connected.forEach(render => render());
     }
 
