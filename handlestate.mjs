@@ -48,7 +48,7 @@ class HandleState {
 
     /**
      * Define the state value
-     * @param {any} v 
+     * @param {any | Function} v 
      * @returns {void}
      */
     set(v) {
@@ -250,7 +250,7 @@ class ComputedState extends HandleState {
  * // >> 0
  * // >> 1
  * ```
- * @param {any | Function} value 
+ * @param {any} value 
  * @returns {HandleState}
  */
 function state(value) {
