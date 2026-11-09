@@ -322,12 +322,11 @@ function batch(fn) {
     __activeBatch = true;
     try {
         fn();
-
+    } finally {
+        __activeBatch = false;
         for (const render of [...__dirtyBatch]) {
             render();
         }
-    } finally {
-        __activeBatch = false;
         __dirtyBatch = new Set();
     }
 }
