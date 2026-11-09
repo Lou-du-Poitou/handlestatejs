@@ -60,8 +60,13 @@ const render = () => {
     console.log(a.get(), b.get());
 };
 
-a.connect(render);
-b.connect(render);
+render(); // First render
+a.connect(render, {
+    firstRender: false
+});
+b.connect(render, {
+    firstRender: false
+});
 
 batch(() => {
     a.set(v => ++v);
