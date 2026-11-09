@@ -291,8 +291,13 @@ function computed(fn) {
  *      console.log(a.get(), b.get());
  * };
  * 
- * a.connect(render);
- * b.connect(render);
+ * render(); // First render
+ * a.connect(render, {
+ *      firstRender: false
+ * });
+ * b.connect(render, {
+ *      firstRender: false
+ * });
  * 
  * batch(() => {
  *      a.set(v => ++v);
@@ -307,20 +312,22 @@ function computed(fn) {
  * @returns {void}
  */
 function batch(fn) {
+    if (fn.constructor.name === 'AsyncFunction') {
+        throw new TypeError("fn must be a synchronous function");
+    }
+
     if (__activeBatch) // Nested batch
         return fn();
 
     __activeBatch = true;
     try {
-        const result = fn();
-        if (result instanceof Promise) {
-            throw new TypeError("fn must be a synchronous function");
-        }
-    } finally {
-        __activeBatch = false;
+        fn();
+
         for (const render of [...__dirtyBatch]) {
             render();
         }
+    } finally {
+        __activeBatch = false;
         __dirtyBatch = new Set();
     }
 }
